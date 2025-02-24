@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "110112987240",
+    "project_id": "thesis-a5761",
+    "storage_bucket": "thesis-a5761.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110112987240:android:373846d9ada7a581d003dd",
+        "android_client_info": {
+          "package_name": "com.example.sugarmate_thesis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110112987240-nqt0q25dgjm7qbv23dr5lfq73615956e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACZjaiuJVGTxc18BE8-Er-ij6_1rAIFWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110112987240-nqt0q25dgjm7qbv23dr5lfq73615956e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

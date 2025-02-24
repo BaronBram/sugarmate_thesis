@@ -1,0 +1,70 @@
+buildscript {
+    ext.kotlin_version = '1.8.20'
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.2'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    configurations.all {
+        resolutionStrategy {
+            force "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+            force 'androidx.annotation:annotation:1.7.0'
+            force 'androidx.lifecycle:lifecycle-common:2.2.0'
+            force 'androidx.lifecycle:lifecycle-runtime:2.2.0'
+            force 'androidx.core:core:1.6.0'
+            force 'com.google.android.gms:play-services-tasks:18.1.0'
+            force 'androidx.arch.core:core-common:2.1.0'
+            force 'androidx.collection:collection:1.1.0'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+            force 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+            force 'com.google.firebase:firebase-common:21.0.0'
+            force 'androidx.fragment:fragment:1.1.0'
+            force 'com.google.android.gms:play-services-auth-api-phone:18.0.2'
+            force 'com.google.android.gms:play-services-basement:18.3.0'
+            force 'com.google.firebase:firebase-annotations:16.2.0'
+            force 'androidx.concurrent:concurrent-futures:1.1.0'
+            force 'com.google.android.gms:play-services-fido:20.1.0'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.3'
+            force 'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.7.3'
+            force 'org.jetbrains:annotations:23.0.0'
+            force 'com.google.firebase:firebase-auth-interop:20.0.0'
+            force 'com.google.errorprone:error_prone_annotations:2.26.0'
+            force 'com.google.protobuf:protobuf-javalite:3.22.3'
+            force 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+            force 'com.google.firebase:firebase-appcheck-interop:17.1.0'
+            force 'com.google.firebase:firebase-appcheck:18.0.0'
+            force 'com.google.android.gms:play-services-base:18.1.0'
+            // Fail if there are any dependency conflicts
+            failOnVersionConflict()
+        }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
