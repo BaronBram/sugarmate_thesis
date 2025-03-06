@@ -28,7 +28,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
 
   void _addSugarIntake(double sugarAmount) {
     //double? sugarAmount = double.tryParse(_sugarInputController.text);
-    if (sugarAmount > 0) {
+    if (sugarAmount >= 0) {
       Navigator.pop(context, sugarAmount); // Return the sugar amount
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -51,6 +51,12 @@ allprojects {
             force 'com.google.firebase:firebase-appcheck-interop:17.1.0'
             force 'com.google.firebase:firebase-appcheck:18.0.0'
             force 'com.google.android.gms:play-services-base:18.1.0'
+            force 'androidx.activity:activity:1.6.0'
+            force 'androidx.core:core-ktx:1.8.0'
+            force 'androidx.lifecycle:lifecycle-livedata-core:2.5.1'
+            force 'androidx.startup:startup-runtime:1.1.1'
+            force 'androidx.arch.core:core-runtime:2.1.0'
+
             // Fail if there are any dependency conflicts
             failOnVersionConflict()
         }

@@ -16,8 +16,14 @@ class SugarController {
   }
 
   Future<void> addSugarIntake(double sugarAmount) async {
-    final newEntry = SugarIntake(sugarAmount: sugarAmount, date: DateTime.now());
-    _intakeHistory.add(newEntry);
+    // final newEntry = SugarIntake(sugarAmount: sugarAmount, date: DateTime.now());
+    // _intakeHistory.add(newEntry);
+    DateTime now = DateTime.now();
+
+    SugarIntake newIntake = SugarIntake(sugarAmount: sugarAmount, date: now);
+
+    _intakeHistory.add(newIntake);
+    print("✅ Data disimpan: ${newIntake.sugarAmount}g pada ${newIntake.date}");
     await _saveData();
   }
 

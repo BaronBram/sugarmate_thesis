@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sugarmate_thesis/Model/sugar_intake.dart';
 
 class SugarProvider extends ChangeNotifier {
@@ -6,13 +8,36 @@ class SugarProvider extends ChangeNotifier {
 
   List<SugarIntake> get history => _history;
 
+  SugarProvider() {
+    _loadDataFromSharedPreferences();
+  }
+
+  Future<void> _loadDataFromSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? historyString = prefs.getString('sugarHistory');
+    if (historyString != null) {
+      final List<dynamic> decodedList = jsonDecode(historyString);
+      _history = decodedList.map((item) => SugarIntake.fromJson(item)).toList();
+      notifyListeners();
+    }
+  }
+
+  Future<void> _saveDataToSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Map<String, dynamic>> encodedList = _history.map((item) => item.toJson()).toList();
+    final String encodedString = jsonEncode(encodedList);
+    await prefs.setString('sugarHistory', encodedString);
+  }
+
   void addSugarIntake(double sugarAmount) {
     _history.add(SugarIntake(sugarAmount: sugarAmount, date: DateTime.now()));
-    notifyListeners(); // Memperbarui UI
+    _saveDataToSharedPreferences();
+    notifyListeners();
   }
 
   void removeSugarIntake(int index) {
     _history.removeAt(index);
-    notifyListeners(); // Memperbarui UI
+    _saveDataToSharedPreferences();
+    notifyListeners();
   }
 }

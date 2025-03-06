@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sugarmate_thesis/View/article_view.dart';
 import 'package:sugarmate_thesis/View/sugar_tracker_view.dart';
 import 'package:sugarmate_thesis/auth/auth_service.dart';
 import 'package:sugarmate_thesis/auth/signup_screen.dart';
@@ -81,9 +82,14 @@ class _LoginScreenState extends State<LoginScreen> {
     MaterialPageRoute(builder: (context) => const SignUpScreen()),
   );
 
+  // goToHome(BuildContext context) => Navigator.push(
+  //   context,
+  //   MaterialPageRoute(builder: (context) => CalendarScreen()),
+  // );
+
   goToHome(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => TrackerView()),
+    MaterialPageRoute(builder: (context) => ArticleListView()),
   );
 
   _login() async {
