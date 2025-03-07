@@ -15,34 +15,23 @@ class SugarController {
     }
   }
 
-  Future<void> addSugarIntake(double sugarAmount) async {
-    // final newEntry = SugarIntake(sugarAmount: sugarAmount, date: DateTime.now());
-    // _intakeHistory.add(newEntry);
-    DateTime now = DateTime.now();
-
-    SugarIntake newIntake = SugarIntake(sugarAmount: sugarAmount, date: now);
-
-    _intakeHistory.add(newIntake);
-    print("✅ Data disimpan: ${newIntake.sugarAmount}g pada ${newIntake.date}");
-    await _saveData();
-  }
-
-  Future<void> editSugarIntake(int index, double newSugarAmount) async {
-    if (index >= 0 && index < _intakeHistory.length) {
-      _intakeHistory[index] = SugarIntake(
-        sugarAmount: newSugarAmount,
-        date: _intakeHistory[index].date,
-      );
-      await _saveData();
-    }
-  }
-
-  Future<void> deleteSugarIntake(int index) async {
-    if (index >= 0 && index < _intakeHistory.length) {
-      _intakeHistory.removeAt(index);
-      await _saveData();
-    }
-  }
+  // Future<void> editSugarIntake(int index, double newSugarAmount, String newFoodName) async {
+  //   if (index >= 0 && index < _intakeHistory.length) {
+  //     _intakeHistory[index] = SugarIntake(
+  //       sugarAmount: newSugarAmount,
+  //       date: _intakeHistory[index].date,
+  //       foodName: newFoodName
+  //     );
+  //     await _saveData();
+  //   }
+  // }
+  //
+  // Future<void> deleteSugarIntake(int index) async {
+  //   if (index >= 0 && index < _intakeHistory.length) {
+  //     _intakeHistory.removeAt(index);
+  //     await _saveData();
+  //   }
+  // }
 
   Future<void> _saveData() async {
     final prefs = await SharedPreferences.getInstance();

@@ -82,15 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
     MaterialPageRoute(builder: (context) => const SignUpScreen()),
   );
 
-  // goToHome(BuildContext context) => Navigator.push(
-  //   context,
-  //   MaterialPageRoute(builder: (context) => CalendarScreen()),
-  // );
-
   goToHome(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => ArticleListView()),
+    MaterialPageRoute(builder: (context) => CalendarScreen()),
   );
+
+  // goToHome(BuildContext context) => Navigator.push(
+  //   context,
+  //   MaterialPageRoute(builder: (context) => ArticleListView()),
+  // );
 
   _login() async {
     final user =

@@ -29,8 +29,8 @@ class SugarProvider extends ChangeNotifier {
     await prefs.setString('sugarHistory', encodedString);
   }
 
-  void addSugarIntake(double sugarAmount) {
-    _history.add(SugarIntake(sugarAmount: sugarAmount, date: DateTime.now()));
+  void addSugarIntake(double sugarAmount, String foodName, int servingAmount, DateTime selectedDate) {
+    _history.add(SugarIntake(sugarAmount: sugarAmount, date: selectedDate, foodName: foodName, servingAmount: servingAmount));
     _saveDataToSharedPreferences();
     notifyListeners();
   }
