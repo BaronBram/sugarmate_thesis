@@ -1,19 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sugarmate_thesis/Model/sugar_provider.dart';
+import 'package:flutter/services.dart';
 import 'package:sugarmate_thesis/auth/login_screen.dart';
 // Import the generated file
 import 'firebase_options.dart';
 
-void main() async{
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(
-    ChangeNotifierProvider(
-    create: (context) => SugarProvider(),
-    child: MyApp(),
-  ),);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown, // Prevent landscape
+  ]).then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {

@@ -6,9 +6,9 @@ class SugarIntake {
   final String foodName;
   final int servingAmount;
   final String? userEmail;
+  String? docId;
 
-
-  SugarIntake({required this.sugarAmount, required this.date, required this.foodName, required this.servingAmount, required this.userEmail});
+  SugarIntake({this.docId, required this.sugarAmount, required this.date, required this.foodName, required this.servingAmount, required this.userEmail});
 
   Map<String, dynamic> toJson() => {
     'sugarAmount': sugarAmount,
@@ -18,16 +18,9 @@ class SugarIntake {
     'userEmail': userEmail
   };
 
-  factory SugarIntake.fromJson(Map<String, dynamic> json) => SugarIntake(
-    sugarAmount: json['sugarAmount'],
-    date: json['date'],
-    foodName: json['foodName'],
-    servingAmount: json['servingAmount'],
-    userEmail: json['userEmail']
-  );
-
-  factory SugarIntake.fromFirestore(Map<String, dynamic> data) {
+  factory SugarIntake.fromFirestore(String docId, Map<String, dynamic> data) {
     return SugarIntake(
+      docId: docId,
       date: (data['date'] as Timestamp?)?.toDate() ?? DateTime.now(), // Konversi String ke DateTime
       sugarAmount: (data['sugarAmount'] as num).toDouble(),
       foodName: data['foodName'],

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:sugarmate_thesis/Controller/sugar_controller.dart';
-import 'package:sugarmate_thesis/Model/sugar_provider.dart';
+import 'package:sugarmate_thesis/Model/sugar_intake.dart';
+import 'package:sugarmate_thesis/Model/user_session.dart';
+import 'package:sugarmate_thesis/auth/login_screen.dart';
 
 class FoodSearchView extends StatefulWidget {
   final DateTime selectedDate;
@@ -17,6 +19,8 @@ class FoodSearchView extends StatefulWidget {
 class _FoodSearchViewState extends State<FoodSearchView> {
   final TextEditingController _searchController = TextEditingController();
   final SugarController _controller = SugarController();
+  String? loggedEmail = UserSession().email;
+
   String _searchQuery = "";
 
   /// Menghasilkan stream berdasarkan query pencarian
@@ -33,18 +37,18 @@ class _FoodSearchViewState extends State<FoodSearchView> {
   }
 
 
-  void _addSugarIntake(double sugarAmount, String foodName, int servingAmount) {
-    //double? sugarAmount = double.tryParse(_sugarInputController.text);
-    if (sugarAmount >= 0) {
-      Provider.of<SugarProvider>(context, listen: false).addSugarIntake(sugarAmount, foodName, servingAmount, widget.selectedDate);
-      Navigator.of(context).pop(servingAmount);
-      //Navigator.pop(context, sugarAmount); // Return the sugar amount
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Masukkan jumlah gula yang valid!")),
-      );
-    }
-  }
+  // void _addSugarIntake(double sugarAmount, String foodName, int servingAmount) {
+  //   //double? sugarAmount = double.tryParse(_sugarInputController.text);
+  //   if (sugarAmount >= 0) {
+  //     Provider.of<SugarProvider>(context, listen: false).addSugarIntake(sugarAmount, foodName, servingAmount, widget.selectedDate, loggedEmail);
+  //     Navigator.of(context).pop(servingAmount);
+  //     //Navigator.pop(context, sugarAmount); // Return the sugar amount
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text("Masukkan jumlah gula yang valid!")),
+  //     );
+  //   }
+  // }
 
   // void _addSugarIntake(double sugarAmount) async {
   //   await _controller.addSugarIntake(sugarAmount);
@@ -82,7 +86,17 @@ class _FoodSearchViewState extends State<FoodSearchView> {
       btnOkText: "Add",
       btnOkOnPress: () {
         double totalSugar = servings * sugarPerServing;
-        _addSugarIntake(totalSugar, foodName, servings);
+        //_addSugarIntake(totalSugar, foodName, servings);
+        SugarIntake intake = SugarIntake(
+          foodName: foodName,
+          servingAmount: servings,
+          sugarAmount: totalSugar,
+          date: widget.selectedDate,
+          userEmail: loggedEmail
+        );
+
+        // Call controller to add data
+        _controller.addSugarIntakeToFirebase(intake);
       },
     ).show();
   }

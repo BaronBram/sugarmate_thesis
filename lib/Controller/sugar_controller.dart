@@ -9,14 +9,14 @@ class SugarController {
   List<SugarIntake> _intakeHistory = [];
   String? loggedEmail = UserSession().email;
 
-  Future<void> loadIntakeHistory() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? data = prefs.getString('sugarHistory');
-    if (data != null) {
-      List<dynamic> jsonData = json.decode(data);
-      _intakeHistory = jsonData.map((e) => SugarIntake.fromJson(e)).toList();
-    }
-  }
+  // Future<void> loadIntakeHistory() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   String? data = prefs.getString('sugarHistory');
+  //   if (data != null) {
+  //     List<dynamic> jsonData = json.decode(data);
+  //     _intakeHistory = jsonData.map((e) => SugarIntake.fromJson(e)).toList();
+  //   }
+  // }
 
   // Future<void> editSugarIntake(int index, double newSugarAmount, String newFoodName) async {
   //   if (index >= 0 && index < _intakeHistory.length) {
@@ -59,31 +59,41 @@ class SugarController {
   // Function to add sugar intake to Firestore
   Future<void> addSugarIntakeToFirebase(SugarIntake intake) async {
     try {
-      await _firestore.collection('sugar_intake').add(intake.toJson());
-      print('Sugar intake added successfully');
+      // Add the document to Firestore
+      DocumentReference docRef = await _firestore.collection('sugar_intake').add(intake.toJson());
+
+      // Update the document with its own document ID
+      await docRef.update({'docId': docRef.id});
+
+      print('Sugar intake added successfully with docId: ${docRef.id}');
     } catch (error) {
       print('Failed to add sugar intake: $error');
     }
   }
 
-  Future<Map<DateTime, List<SugarIntake>>> fetchSugarIntake() async {
-    QuerySnapshot querySnapshot = await _firestore.collection('sugar_intake').where('userEmail', isEqualTo: loggedEmail).get();
 
-    Map<DateTime, List<SugarIntake>> sugarData = {};
+  Stream<Map<DateTime, List<SugarIntake>>> fetchSugarIntake() {
+    return _firestore
+        .collection('sugar_intake')
+        .where('userEmail', isEqualTo: loggedEmail)
+        .snapshots()
+        .map((QuerySnapshot querySnapshot) {
+      Map<DateTime, List<SugarIntake>> sugarData = {};
 
-    for (var doc in querySnapshot.docs) {
-      SugarIntake intake = SugarIntake.fromFirestore(doc.data() as Map<String, dynamic>);
+      for (var doc in querySnapshot.docs) {
+        SugarIntake intake = SugarIntake.fromFirestore(doc.id, doc.data() as Map<String, dynamic>);
 
-      // Normalisasi ke format tanpa jam
-      DateTime normalizedDate = DateTime(intake.date.year, intake.date.month, intake.date.day);
+        // Normalisasi ke format tanpa jam
+        DateTime normalizedDate = DateTime(intake.date.year, intake.date.month, intake.date.day);
 
-      if (!sugarData.containsKey(normalizedDate)) {
-        sugarData[normalizedDate] = [];
+        if (!sugarData.containsKey(normalizedDate)) {
+          sugarData[normalizedDate] = [];
+        }
+        sugarData[normalizedDate]!.add(intake);
       }
-      sugarData[normalizedDate]!.add(intake);
-      print("Fetched sugar intake: ${intake.foodName}, Date: ${intake.date}");
-    }
-    return sugarData;
+      return sugarData;
+    });
   }
+
 }
 
