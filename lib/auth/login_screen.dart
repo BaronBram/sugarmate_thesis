@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sugarmate_thesis/Model/user_session.dart';
 import 'package:sugarmate_thesis/View/article_view.dart';
 import 'package:sugarmate_thesis/View/sugar_tracker_view.dart';
 import 'package:sugarmate_thesis/auth/auth_service.dart';
@@ -8,6 +9,8 @@ import 'package:sugarmate_thesis/home_screen.dart';
 import 'package:sugarmate_thesis/widgets/textfield.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -98,6 +101,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (user != null) {
       print("User Logged In");
+      // Store logged-in email
+      UserSession().email = _email.text;
       goToHome(context);
     } else {
       Fluttertoast.showToast(
