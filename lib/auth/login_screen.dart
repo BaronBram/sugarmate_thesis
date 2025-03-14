@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sugarmate_thesis/Model/user_session.dart';
 import 'package:sugarmate_thesis/View/article_view.dart';
+import 'package:sugarmate_thesis/View/main_view.dart';
 import 'package:sugarmate_thesis/View/sugar_tracker_view.dart';
 import 'package:sugarmate_thesis/auth/auth_service.dart';
 import 'package:sugarmate_thesis/auth/signup_screen.dart';
@@ -61,9 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFA3F6D1),
                 ),
-
               child: Text('Login', style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.bold),),
-
             ),
             const SizedBox(height: 5),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -87,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   goToHome(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CalendarScreen()),
+    MaterialPageRoute(builder: (context) => MainPage()),
   );
 
   // goToHome(BuildContext context) => Navigator.push(

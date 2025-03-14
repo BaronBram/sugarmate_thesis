@@ -5,8 +5,9 @@ import 'package:sugarmate_thesis/auth/login_screen.dart';
 // Import the generated file
 import 'firebase_options.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown, // Prevent landscape

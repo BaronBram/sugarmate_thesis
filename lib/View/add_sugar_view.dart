@@ -36,24 +36,19 @@ class _FoodSearchViewState extends State<FoodSearchView> {
         .snapshots();
   }
 
-
-  // void _addSugarIntake(double sugarAmount, String foodName, int servingAmount) {
-  //   //double? sugarAmount = double.tryParse(_sugarInputController.text);
-  //   if (sugarAmount >= 0) {
-  //     Provider.of<SugarProvider>(context, listen: false).addSugarIntake(sugarAmount, foodName, servingAmount, widget.selectedDate, loggedEmail);
-  //     Navigator.of(context).pop(servingAmount);
-  //     //Navigator.pop(context, sugarAmount); // Return the sugar amount
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text("Masukkan jumlah gula yang valid!")),
-  //     );
-  //   }
-  // }
-
-  // void _addSugarIntake(double sugarAmount) async {
-  //   await _controller.addSugarIntake(sugarAmount);
-  //   Navigator.pop(context); // Kembali ke halaman tracker setelah menambah
-  // }
+  void _showCompleteDialog(BuildContext context) {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.success,
+      animType: AnimType.scale,
+      title: "Insertion Complete",
+      desc: "The data has been added",
+      btnOkText: "Okay",
+      btnOkColor: Colors.green,
+      btnOkOnPress: () {
+      },
+    ).show();
+  }
 
   void _showAddSugarIntakeDialog(BuildContext context, String foodName, double sugarPerServing) {
     int servings = 1; // Default to 1 serving
@@ -73,7 +68,6 @@ class _FoodSearchViewState extends State<FoodSearchView> {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               hintText: 'Enter number of servings',
-              border: OutlineInputBorder(),
             ),
             onChanged: (value) {
               servings = int.tryParse(value) ?? 1; // Default to 1 if input is invalid
@@ -84,7 +78,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
       btnCancelText: "Cancel",
       btnCancelOnPress: () {},
       btnOkText: "Add",
-      btnOkOnPress: () {
+      btnOkOnPress: () async {
         double totalSugar = servings * sugarPerServing;
         //_addSugarIntake(totalSugar, foodName, servings);
         SugarIntake intake = SugarIntake(
@@ -96,7 +90,8 @@ class _FoodSearchViewState extends State<FoodSearchView> {
         );
 
         // Call controller to add data
-        _controller.addSugarIntakeToFirebase(intake);
+       await _controller.addSugarIntakeToFirebase(intake);
+        _showCompleteDialog(context);
       },
     ).show();
   }
@@ -155,15 +150,4 @@ class _FoodSearchViewState extends State<FoodSearchView> {
     );
   }
 }
-
-// void _addSugarIntake() {
-//   double? sugarAmount = double.tryParse(_sugarInputController.text);
-//   if (sugarAmount != null && sugarAmount > 0) {
-//     Navigator.pop(context, sugarAmount); // Return the sugar amount
-//   } else {
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(content: Text("Masukkan jumlah gula yang valid!")),
-//     );
-//   }
-// }
 
