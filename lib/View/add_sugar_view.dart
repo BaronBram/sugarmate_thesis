@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sugarmate_thesis/Controller/sugar_controller.dart';
 import 'package:sugarmate_thesis/Model/sugar_intake.dart';
@@ -62,16 +63,18 @@ class _FoodSearchViewState extends State<FoodSearchView> {
       title: 'How many servings of $foodName?',
       body: Column(
         children: [
-          Text('Each serving contains ${sugarPerServing.toStringAsFixed(1)}g of sugar.'),
-          SizedBox(height: 10),
-          TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              hintText: 'Enter number of servings',
+          Text('Each serving contains ${sugarPerServing.toStringAsFixed(1)}g of sugar', style: GoogleFonts.poppins(color: Colors.black,)),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: 'Enter number of servings',
+              ),
+              onChanged: (value) {
+                servings = int.tryParse(value) ?? 1; // Default to 1 if input is invalid
+              },
             ),
-            onChanged: (value) {
-              servings = int.tryParse(value) ?? 1; // Default to 1 if input is invalid
-            },
           ),
         ],
       ),
@@ -99,7 +102,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Search Food & Calculate Sugar")),
+      appBar: AppBar(title: Text("Food List", style: GoogleFonts.poppins(fontWeight: FontWeight.bold),)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -135,8 +138,9 @@ class _FoodSearchViewState extends State<FoodSearchView> {
                     itemBuilder: (context, index) {
                       final food = docs[index].data() as Map<String, dynamic>;
                       return ListTile(
-                        title: Text(food['name']),
-                        subtitle: Text("${food['sugar']}g sugar per serving"),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        title: Text(food['name'], style: GoogleFonts.poppins(color: Colors.black,)),
+                        subtitle: Text("${food['sugar']}g sugar per serving", style: GoogleFonts.poppins()),
                         onTap: () => _showAddSugarIntakeDialog(context, food['name'], (food['sugar'] as num).toDouble()),
                       );
                     },

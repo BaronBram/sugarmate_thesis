@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sugarmate_thesis/View/main_view.dart';
+import 'package:sugarmate_thesis/View/sugar_tracker_view.dart';
 import 'package:sugarmate_thesis/auth/login_screen.dart';
 // Import the generated file
 import 'firebase_options.dart';
@@ -28,6 +30,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/tracker': (context) => MainPage(),
+      },
       home: const LoginScreen(),
     );
   }

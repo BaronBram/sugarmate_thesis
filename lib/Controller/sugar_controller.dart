@@ -6,20 +6,8 @@ import 'package:sugarmate_thesis/Model/sugar_intake.dart';
 import 'package:sugarmate_thesis/Model/user_session.dart';
 
 class SugarController {
-  List<SugarIntake> _intakeHistory = [];
+
   String? loggedEmail = UserSession().email;
-
-  double getDailySugarTotal() {
-    DateTime today = DateTime.now();
-    return _intakeHistory
-        .where((entry) =>
-    entry.date.year == today.year &&
-        entry.date.month == today.month &&
-        entry.date.day == today.day)
-        .fold(0, (sum, entry) => sum + entry.sugarAmount);
-  }
-
-  List<SugarIntake> get history => List.unmodifiable(_intakeHistory);
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 

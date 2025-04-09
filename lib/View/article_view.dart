@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sugarmate_thesis/Controller/article_controller.dart';
 import 'package:sugarmate_thesis/Model/article_model.dart';
 import 'package:sugarmate_thesis/View/article_content_view.dart';
@@ -18,7 +19,7 @@ class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Articles')),
+      appBar: AppBar(title: Text('Articles List', style: GoogleFonts.poppins(color: Colors.black,))),
       body: StreamBuilder<List<ArticleModel>>(
         stream: _articleController.fetchArticles(),
         builder: (context, snapshot) {
@@ -61,14 +62,14 @@ class _ArticleListViewState extends State<ArticleListView> {
                     leading: article.imgUrl.isNotEmpty
                         ? Image.network(
                       article.imgUrl,
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      fit: BoxFit.fill,
                     )
                         : const Icon(Icons.image, size: 60),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    title: Text(article.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text('By ${article.author}'),
+                    title: Text(article.title, style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.bold)),
+                    subtitle: Text('By ${article.author}', style: GoogleFonts.poppins(color: Colors.grey)),
                   ),
                 ),
               );

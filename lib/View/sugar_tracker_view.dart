@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:sugarmate_thesis/Controller/sugar_controller.dart';
 import 'package:sugarmate_thesis/Model/sugar_intake.dart';
 import 'package:sugarmate_thesis/View/add_sugar_view.dart';
+import 'package:sugarmate_thesis/auth/auth_service.dart';
+import 'package:sugarmate_thesis/auth/login_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
@@ -59,10 +61,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: Text('Sugar Intake Calendar'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+             _showSignOutConfirmationDialog(context, auth);
+            },
+          ),
+        ],
       ),
+
       body: Column(
         children: [
           TableCalendar(
@@ -76,7 +88,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         width: 35, // Adjust marker size
                         height: 35,
                         decoration: BoxDecoration(
-                          color: Colors.tealAccent.withOpacity(0.5), // Semi-transparent red
+                          color: Colors.purpleAccent.withOpacity(0.5), // Semi-transparent red
                           shape: BoxShape.circle, // Makes it circular
                         ),
                       ),
@@ -115,11 +127,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
             eventLoader: _getEventsForDay,
             calendarStyle: const CalendarStyle(
               todayDecoration: BoxDecoration(
-                color: Colors.teal, // Changes the focused day color to red
+                color: Colors.purple, // Changes the focused day color to red
                 shape: BoxShape.circle,
               ),
               selectedDecoration: BoxDecoration(
-                color: Colors.teal, // Custom color for selected day
+                color: Colors.purple, // Custom color for selected day
                 shape: BoxShape.circle,
               ),
               todayTextStyle: TextStyle(
@@ -158,7 +170,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     "Total sugars: ${_getEventsForDay(_selectedDay).fold(0, (sum, item) => sum + item.sugarAmount.toInt())}g",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.height * 0.02, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -197,19 +209,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
     ).show();
   }
 
-
-  void _showDeleteDialog(BuildContext context) {
+  void _showSignOutConfirmationDialog(BuildContext context, AuthService auth) {
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.success,
+      dialogType: DialogType.warning,
       animType: AnimType.scale,
-      title: "Deletion Complete",
-      desc: "The data has been deleted",
-      btnOkText: "Okay",
-      btnOkColor: Colors.green,
-      btnOkOnPress: () {
+      title: "Confirm Sign Out",
+      desc: "Are you sure you want to sign out?",
+      btnCancelText: "Cancel",
+      btnCancelOnPress: () {},
+      btnOkText: "Yes",
+      btnOkOnPress: () async {
+        await auth.signOut();
+        Navigator.pushReplacementNamed(context, '/login');
       },
     ).show();
   }
-
+  
 }
