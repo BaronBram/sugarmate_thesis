@@ -59,10 +59,12 @@ class _FoodSearchViewState extends State<FoodSearchView> {
       dialogType: DialogType.info,
       animType: AnimType.scale,
       dismissOnBackKeyPress: false,
-      dismissOnTouchOutside: false,
+      dismissOnTouchOutside: true,
       title: 'How many servings of $foodName?',
       body: Column(
         children: [
+
+          Text('How many servings of $foodName?', style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
           Text('Each serving contains ${sugarPerServing.toStringAsFixed(1)}g of sugar', style: GoogleFonts.poppins(color: Colors.black,)),
           Padding(
             padding: const EdgeInsets.all(20.0),
@@ -89,7 +91,8 @@ class _FoodSearchViewState extends State<FoodSearchView> {
           servingAmount: servings,
           sugarAmount: totalSugar,
           date: widget.selectedDate,
-          userEmail: loggedEmail
+          userEmail: loggedEmail,
+          sugarPerServing: sugarPerServing,
         );
 
         // Call controller to add data

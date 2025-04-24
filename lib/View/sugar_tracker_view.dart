@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sugarmate_thesis/Controller/sugar_controller.dart';
 import 'package:sugarmate_thesis/Model/sugar_intake.dart';
@@ -24,7 +25,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late Map<DateTime, List<SugarIntake>> _events = {};
   final SugarController _sugarController = SugarController();
   StreamSubscription? _sugarSubscription;
-
 
   void _listenToSugarData() {
     _sugarSubscription = _sugarController.fetchSugarIntake().listen((data) {
@@ -64,12 +64,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final auth = AuthService();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sugar Intake Calendar'),
+        title: Text('Sugar Intake Calendar', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-             _showSignOutConfirmationDialog(context, auth);
+              _showSignOutConfirmationDialog(context, auth);
             },
           ),
         ],
@@ -152,16 +152,33 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     return ListTile(
                       title: Text('${intake.foodName} - ${intake.servingAmount} servings'),
                       subtitle: Text('${intake.sugarAmount} grams of sugar '),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _showDeleteConfirmationDialog(context, intake, () {
-                            setState(() {}); // Refresh UI
-                          });
-                          // Delete the sugar intake
-                          //sugarProvider.removeSugarIntake(sugarProvider.history.indexOf(intake));
-                         // _showDeleteConfirmationDialog(context, sugarProvider, intake);
-                        },
+                      trailing: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                _showUpdateServingDialog(context, intake, () {
+                                  setState(() {}); // Refresh UI
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _showDeleteConfirmationDialog(context, intake, () {
+                                  setState(() {}); // Refresh UI
+                                });
+                                // Delete the sugar intake
+                                //sugarProvider.removeSugarIntake(sugarProvider.history.indexOf(intake));
+                                // _showDeleteConfirmationDialog(context, sugarProvider, intake);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -225,5 +242,88 @@ class _CalendarScreenState extends State<CalendarScreen> {
       },
     ).show();
   }
-  
+
+  void _showUpdateServingDialog(
+      BuildContext context,
+      SugarIntake intake,
+      Function refreshData,
+      ) {
+    final TextEditingController _servingController =
+    TextEditingController(text: intake.servingAmount.toString());
+
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.question,
+      animType: AnimType.scale,
+      body: Column(
+        children: [
+          const SizedBox(height: 10),
+          Text("Adjust the servings for ${intake.foodName}", style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+          Text("Each serving has ${intake.sugarPerServing}g sugar", style: GoogleFonts.poppins(color: Colors.black,)),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: TextField(
+              controller: _servingController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+              hintText: 'New Serving Amount'
+              ),
+            ),
+          ),
+        ],
+      ),
+      btnCancelText: "Cancel",
+      btnCancelOnPress: () {},
+      btnOkText: "Update",
+      btnOkOnPress: () async {
+        int? newServing = int.tryParse(_servingController.text);
+
+        if (newServing == null || newServing <= 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text("Serving amount must be greater than 0"),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.red,
+              elevation: 6,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              margin: const EdgeInsets.all(16),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+        if (newServing != null && newServing > 0) {
+          // double sugarPerServing = intake.sugarPerServing;
+          // double newTotalSugar = sugarPerServing * newServing;
+          //
+          // // Update Firestore
+          // await FirebaseFirestore.instance
+          //     .collection('sugar_intake')
+          //     .doc(intake.docId)
+          //     .update({
+          //   'servingAmount': newServing,
+          //   'sugarAmount': newTotalSugar,
+          // });
+          // refreshData(); // Refresh UI
+          updateSugarData(context, intake, refreshData, newServing);
+        }
+      },
+    ).show();
+  }
+}
+
+Future<void> updateSugarData(BuildContext context,
+    SugarIntake intake,
+    Function refreshData, int newServing) async {
+  double sugarPerServing = intake.sugarPerServing;
+  double newTotalSugar = sugarPerServing * newServing;
+
+  // Update Firestore
+  await FirebaseFirestore.instance
+      .collection('sugar_intake')
+      .doc(intake.docId)
+      .update({
+    'servingAmount': newServing,
+    'sugarAmount': newTotalSugar,
+  });
+  refreshData(); // Refresh UI
 }
