@@ -4,7 +4,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:sugarmate_thesis/Controller/sugar_controller.dart';
 import 'package:sugarmate_thesis/Model/sugar_intake.dart';
 import 'package:sugarmate_thesis/View/add_sugar_view.dart';
@@ -63,6 +62,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final auth = AuthService();
     return Scaffold(
+
       appBar: AppBar(
         title: Text('Sugar Intake Calendar', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
         actions: [

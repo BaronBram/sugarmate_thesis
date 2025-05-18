@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sugarmate_thesis/auth/auth_service.dart';
 import 'package:sugarmate_thesis/auth/login_screen.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

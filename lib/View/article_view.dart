@@ -19,7 +19,11 @@ class _ArticleListViewState extends State<ArticleListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Articles List', style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.bold))),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+          title: Text('Articles List', style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.bold)),
+
+      ),
       body: StreamBuilder<List<ArticleModel>>(
         stream: _articleController.fetchArticles(),
         builder: (context, snapshot) {
