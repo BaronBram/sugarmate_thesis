@@ -81,6 +81,7 @@ class _FoodSearchViewState extends State<FoodSearchView> {
       ),
       btnCancelText: "Cancel",
       btnCancelOnPress: () {},
+      btnCancelColor: Colors.grey[700],
       btnOkText: "Add",
       btnOkOnPress: () async {
         double totalSugar = servings * sugarPerServing;

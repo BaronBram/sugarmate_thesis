@@ -217,6 +217,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       desc: "Are you sure you want to delete this sugar intake?",
       btnCancelText: "Cancel",
       btnCancelOnPress: () {},
+      btnCancelColor: Colors.grey[700],
       btnOkText: "Delete",
       btnOkColor: Colors.red,
       btnOkOnPress: () async {
@@ -235,6 +236,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       desc: "Are you sure you want to sign out?",
       btnCancelText: "Cancel",
       btnCancelOnPress: () {},
+      btnCancelColor: Colors.grey[700],
       btnOkText: "Yes",
       btnOkOnPress: () async {
         await auth.signOut();
@@ -274,6 +276,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       btnCancelText: "Cancel",
       btnCancelOnPress: () {},
+      btnCancelColor: Colors.grey[700],
       btnOkText: "Update",
       btnOkOnPress: () async {
         int? newServing = int.tryParse(_servingController.text);
